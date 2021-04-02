@@ -38,6 +38,16 @@ def getColor(c, palette):
             return palette[i]  # The sequence is unbounded
     return palette[-1]  # Indicate a bounded sequence
 
+def getNumber(c, palette):
+    """Used for testing. Returns iteration count."""
+    z = complex(0, 0)  # z0
+
+    for i in range(len(palette)):
+        z = z * z + c  # Get z1, z2, ...
+        if abs(z) > 2:
+            return i  # The sequence is unbounded
+    return len(palette)  # Indicate a bounded sequence
+
 
 def paint(fractal, img, window):
     """Paint a Fractal image into the TKinter PhotoImage canvas.

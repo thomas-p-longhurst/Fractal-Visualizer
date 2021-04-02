@@ -2,4 +2,4 @@
 
 | Date      | Events
 |-----------|--------------------
-| April 1   | Document code smells, finish SDP
+| April 1   | Document code smells, write manual, finish SDP, finish testing (tbh just did everything)

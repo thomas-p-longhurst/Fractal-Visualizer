@@ -106,7 +106,7 @@ interactive Mandelbrot program [demo/interactive.py](./demo/interactive.py)
     pixels at once.
     *   It's a low-res fractal plotter.
 *   Left-Clicking the image will paint a square using the same algorithm that
-    the [src/mbrot_fractal.py](./src/mbrot_fractal.py) program uses, except this
+    the [src/mbrot_fractal.py](src/Testing/mbrot_fractal.py) program uses, except this
     program prints the values of the Z parameter at each iteration to the
     console in addition to showing the iteration count in the image.
 *   Right-Clicking the Canvas reveals the entire image.
