@@ -5,7 +5,7 @@ through some formula that is above my paygrade.
 
 # 1.  System Analysis
 
-[main.py](../src/main.py) acts as the main entry point. This file should be a small driver program, and
+[main.py](../src/main.py) acts as the main entry point. This file should be a driver program, and
 not much more.
 
 [FractalInformation.py](../src/FractalInformation.py) defines a data structure that contains all fractal
@@ -54,28 +54,146 @@ Please choose one of the following:
 ```
 
 ## Function Stubs
+For brevity's sake, trivial getter methods have been omitted.
+### `main.py`
+#### `main()`
+```python
+if __name__ == '__main__':
+    """Here be our main point of entry. At the end of the day, we'll have to determine 
+    the user's desired fractal, and pass that information on to ImagePainter.py
+    """
+```
+
+### `Mandelbrot.py`
+#### `getIterationCount()`
+```python
+def getIterationCount():
+    """Returns an int: given a complex coordinate and a max number of iterations, return 
+    the iteration count of the Mandelbrot function for that point
+    """
+```
+
+### `Julia.py`
+#### `getIterationCount()`
+```python
+def getIterationCount():
+    """Returns an int: given a complex coordinate and a max number of iterations, return 
+    the iteration count of the Mandelbrot function for that point
+    """
+```
+
+### `Palette.py`
+#### `getColor()`
+```python
+def getColor():
+    """Returns a String: given an iteration count, return a string corresponding to a color"""
+```
+
+### `ImagePainter.py`
+#### `__init__()`
+```python
+def __init__():
+    """Set up our PhotoImage, and establish the min and max x and y variables"""
+```
+#### `makeTkWindow()`
+```python
+def makeTkWindow():
+    """Creates a TkWindow that we can paint on"""
+```
+#### `paint()`
+```python
+def paint():
+    """Given a coordinate and a color, color the pixel accordingly"""
+```
+#### `saveImage()`
+```python
+def saveImage():
+    """Given a file path, save the image to the disk"""
+```
+
+
 
 # 2.  Functional Examples
+### `main.py`
+#### `main()`
+```pseudocode
+if len(sys.argv) < 2:
+    print("Please provide the name of a fractal as an argument")
+    for pattern in FractalInformation.dictionary:
+        print pattern.name
+desired_fractal = sys.argv[2]
+if desired_fractal is not in FractalInformation.dictionary:
+    print(f"ERROR: {desired_fractal} is not a valid fractal)
+    print("Please choose one of the following:")
+    for pattern in FractalInformation.dictionary:
+        print pattern.name
 
-**Design a process for obtaining the output from the input.  Consider both *good*
-and *bad* inputs.  Find or create examples of both kinds of input.**
+time_start = time()
+painter = new ImagePainter
+for i in range(0, painter.width):
+    for j in range(0, painter.height):
+        if we have a mandel fractal:
+            iteration_count = mandelbrot.getIterationCount(i, j)
+        elif we have a julia fractal:
+            iteration_count = julia.getIterationCount(i, j)
+        color = palette.getColor(iteration_count)
+        painter.paint(i, j, color)
+time_end = time()
+print(f"Painting done in {time_end - time_start}")
+painter.saveImage() 
+```
 
-**Work out problem examples on paper, on a whiteboard or some other medium that
-is *not* your computer.  It is a mistake to begin writing executable code
-before you thoroughly understand what form the algorithm(s) must take.**
+### `Mandelbrot.py`
+#### `getIterationCount()`
+```pseudocode
+z = complex(0.0, 0.0)
 
-**Instead, describe components of the system in *"pseudocode"*.  Expect to make
-lots of mistakes at this point.  You will find that it is much easier to throw
-away pseudocode than real code.**
+for i in range(max_iterations):
+    z = z * z + c
+    if abs(z) > 2:
+        return i
+return max_iterations
+```
 
-**Manually work through several examples that illustrate the program's overall
-purpose, as well as the purpose of each component of the finished system.  You
-will converge on a correct solution much faster if you feel comfortable making
-mistakes as you go.**
+### `Julia.py`
+#### `getIterationCount()`
+```pseudocode
+c = complex(-1.0, 0.0)
 
-**This phase involves the use of many levels of abstraction to decompose the
-problem into manageable components, and design strategies for implementing each
-component.  Components may be functions, modules or classes.**
+for i in range(max_iterations):
+    z = z * z + c
+    if abs(z) > 2:
+        return i
+return max_iterations
+```
+
+### `Palette.py`
+#### `getColor()`
+```pseudocode
+if iterationCount >= len(colors):
+    return colors[-1]
+return colors[iterationCount]
+```
+
+### `ImagePainter.py`
+#### `__init__()`
+```pseudocode
+
+```
+#### `makeTkWindow()`
+```pseudocode
+img = PhotoImage(width=512, height=512)
+window = Tk()
+canvas = Canvas(window, width=512, height=512, bg='#ffffff')
+canvas.pack()
+canvas.create_image((256, 256), image=img, state="normal")
+```
+
+#### `paint()`
+```pseudocode
+
+```
+
 
 
 # 3.  Function Template
