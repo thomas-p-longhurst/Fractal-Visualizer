@@ -9,12 +9,14 @@ if __name__ == '__main__':
         print("Please provide the name of a fractal as an argument")
         for pattern in FractalInformation.dictionary:
             print(pattern)
+        sys.exit(1)
     desired_fractal = sys.argv[1]
     if desired_fractal not in FractalInformation.dictionary:
         print(f"ERROR: {desired_fractal} is not a valid fractal")
         print("Please choose one of the following:")
         for pattern in FractalInformation.dictionary:
-            print(pattern.name)
+            print(pattern)
+        sys.exit(1)
 
     fractal = FractalInformation.dictionary[desired_fractal]
 
