@@ -1,108 +1,49 @@
+#!/bin/env python3
+
 # Mandelbrot Set Visualizer
 
 
 import sys
 import time
 from tkinter import Tk, Canvas, PhotoImage, mainloop
-#from math import sqrt, cos, cosh, sin, sinh, remainder, acos, acosh, asin, asinh
-
-# These are the imports that I usually import
-# import turtle
-# import os
-# import os.path
-# import sys
-# import time
-# import math
-
-# this import caused problems on my Windows computer...
-# import numpy
-
-GRAPEFRUIT_PINK = '#e8283f'
-LEMON = '#fdff00'
-LIME_GREEN = '#89ff00'
-KUMQUAT = '#fac309'
-MAX_ITERATIONS = -1
-POMELLO = '#2fff00'
-TANGERINE = '#f7b604'
-WHITE = '#ffffff'
-#palette = [LIME_GREEN, '#a8f71b', '#c0ef34', '#d2ea4c', '#dfe563', '#e2db78',
-#        '#e0d28d', '#dfce9f', '#e0ceb1', '#e2d2c1', '#e5d9d0', '#eae1de',
-#        '#efebea', '#f7f5f5', WHITE, '#f7f5f5', '#efebea', '#eae0de',
-#        '#e5d6d0', '#e2cdc1', '#e0c5b1', '#dfbf9f', '#e0bc8d', '#e2bd78',
-#        '#e5c163', '#eac94c', '#efd634', '#f7e81b', LEMON, '#f7e81b',
-#        '#efd634', '#eac94c', '#e5c163', '#e2bd78', '#e0bc8d', '#dfbf9f',
-#        '#e0c5b1', '#e2cdc1', '#e5d6d0', '#eae0de', '#efebea', '#f7f5f5',
-#        WHITE, '#f6f5f5', '#efeaea', '#e9dfdd', '#e4d4d0', '#e1c9c1',
-#        '#dfbfb0', '#deb69f', '#deae8c', '#e0a978', '#e2a563', '#e7a54c',
-#        '#eca834', '#f3ae1b', TANGERINE, '#f3ae1b', '#eca834', '#e7a54c',
-#        '#e2a563', '#e0a978', '#deae8c', '#deb69f', '#dfbfb0', '#e1c9c1',
-#        '#e4d4d0', '#e9dfdd', '#efeaea', '#f6f5f5', WHITE, '#f6f6f5',
-#        '#efefea', '#e5e9de', '#d5e3d1', '#c3dfca', '#b4ddd1', '#a3d2db',
-#        '#91adda', '#857fdb', '#a66bdc', '#dc56df', '#e33f9d', WHITE,
-#        '#f6f5f4', '#eeeee8', '#e2e7db', '#cedead', '#beefcc', '#abdbd9',
-#        '#99beda', '#858cda', '#9c70dc', '#d159de', '#e341a4',
-#        GRAPEFRUIT_PINK, ] 
+from math import sqrt
 
 # This color palette contains 100 color steps.
 palette = [
-    '#89ff00', '#a4f817', '#baf12e', '#ccec43', '#d9e758', '#e3e46b', '#e1d97e',
-    '#e0d18f', '#dfce9f', '#e0ceaf', '#e1d1bd', '#e4d6cb', '#e7ddd7', '#ece5e3',
-    '#f1eeed', '#f8f7f7', WHITE, '#f8f7f7', '#f1eeed', '#ece4e3', '#e7dbd7',
-    '#e4d3cb', '#e1cbbd', '#e0c4af', '#dfbf9f', '#e0bd8f', '#e1bc7e', '#e4bf6b',
-    '#e7c458', '#eccd43', '#f1da2e', '#f8eb17', LEMON, '#f8eb17', '#f1da2e',
-    '#eccd43', '#e7c458', '#e4bf6b', '#e1bc7e', '#e0bd8f', '#dfbf9f', '#e0c4af',
-    '#e1cbbd', '#e4d3cb', '#e7dbd7', '#ece4e3', '#f1eeed', '#f8f7f7', WHITE,
-    '#f7f6f6', '#f1eded', '#ebe4e2', '#e6dad7', '#e3d0ca', '#e0c6bd', '#debeae',
-    '#deb69f', '#deaf8e', '#dfaa7d', '#e1a66b', '#e4a557', '#e9a643', '#eea92e',
-    '#f4af17', TANGERINE, '#f4af17', '#eea92e', '#e9a643', '#e4a557', '#e1a66b',
-    '#dfaa7d', '#deaf8e', '#deb69f', '#debeae', '#e0c6bd', '#e3d0ca', '#e6dad7',
-    '#ebe4e2', '#f1eded', '#f7f6f6', WHITE, '#f8f7f7', '#f2f1ef', '#ebece5',
-    '#e2e7db', '#d3e3d0', '#c5e0ca', '#b9ddce', '#abdbd9', '#9ec8da', '#8fa7da',
-    '#8480db', '#9c70dc', '#c25fde', '#e04dcb', '#e43b8d', WHITE, '#f7f6f6',
-    '#f0efec', '#e8eae1', '#dae5d5', '#c8e1cb', '#badecd', '#abdbd9', '#9cc4da',
-    '#8b9cda', '#8d79db', '#b066dd', '#e052da', '#e33e97', GRAPEFRUIT_PINK, ]
+    '#ffe4b5', '#ffe5b2', '#ffe7ae', '#ffe9ab', '#ffeaa8', '#ffeda4',
+    '#ffefa1', '#fff29e', '#fff49a', '#fff797', '#fffb94', '#fffe90',
+    '#fcff8d', '#f8ff8a', '#f4ff86', '#f0ff83', '#ebff80', '#e7ff7c',
+    '#e2ff79', '#ddff76', '#d7ff72', '#d2ff6f', '#ccff6c', '#c6ff68',
+    '#bfff65', '#b9ff62', '#b2ff5e', '#abff5b', '#a4ff58', '#9dff54',
+    '#95ff51', '#8dff4e', '#85ff4a', '#7dff47', '#75ff44', '#6cff40',
+    '#63ff3d', '#5aff3a', '#51ff36', '#47ff33', '#3eff30', '#34ff2c',
+    '#2aff29', '#26ff2c', '#22ff30', '#1fff34', '#1cff38', '#18ff3d',
+    '#15ff42', '#11ff47', '#0eff4c', '#0bff51', '#07ff57', '#04ff5d',
+    '#01ff63', '#00fc69', '#00f970', '#00f677', '#00f27d', '#00ef83',
+    '#00ec89', '#00e88e', '#00e594', '#00e299', '#00de9e', '#00dba3',
+    '#00d8a7', '#00d4ab', '#00d1af', '#00ceb3', '#00cab7', '#00c7ba',
+    '#00c4be', '#00c0c0', '#00b7bd', '#00adba', '#00a4b6', '#009cb3',
+    '#0093b0', '#008bac', '#0082a9', '#007ba6', '#0073a2', '#006b9f',
+    '#00649c', '#005d98', '#005695', '#004f92', '#00498e', '#00438b',
+    '#003d88', '#003784', '#003181', '#002c7e', '#00277a', '#002277',
+]
 
-MAX_ITERATIONS = len(palette)
-z = 0
-seven = 7.0
-TWO = 2
+window = None
+
+
+def getColor(c, palette):
+    """Return the color of the current pixel within the Mandelbrot set"""
+    z = complex(0, 0)  # z0
+
+    for i in range(len(palette)):
+        z = z * z + c  # Get z1, z2, ...
+        if abs(z) > 2:
+            return palette[i]  # The sequence is unbounded
+    return palette[-1]  # Indicate a bounded sequence
+
 
 img = None
 
-mainWindowObject = None
-
-def colorOfThePixel(c, palette):
-    """Return the color of the current pixel within the Mandelbrot set"""
-    global z
-    z = complex(0, 0)  # z0
-
-    global MAX_ITERATIONS
-    global iter
-
-    len = MAX_ITERATIONS
-    for iter in range(len):
-        z = z * z + c  # Get z1, z2, ...
-        global TWO
-        if abs(z) > TWO:
-            z = float(TWO)
-            return palette[iter]  # The sequence is unbounded
-        elif abs(z) < TWO:
-            continue
-        elif abs(z) > seven:
-            print("You should never see this message in production")
-            continue
-            break
-        elif abs(z) < 0:
-            print(f"This REALLY should not have happened! z={z} iter={iter} MAX_ITERATIONS={MAX_ITERATIONS}")
-            sys.exit(1)
-        else:
-            pass
-    # XXX: one of these return statements made the program crash...
-    return palette[MAX_ITERATIONS - 1]   # Indicate a bounded sequence
-    return palette[MAX_ITERATIONS]
-
-
-window = None
 
 def paint(fractals, imagename):
     """Paint a Fractal image into the TKinter PhotoImage canvas.
@@ -121,7 +62,7 @@ def paint(fractals, imagename):
     maxy = fractal['centerY'] + (fractal['axisLen'] / 2.0)
 
     # Display the image on the screen
-    canvas = Canvas(window, width=512, height=512, bg='#000000')
+    canvas = Canvas(window, width=512, height=512, bg='#ffffff')
     canvas.pack()
     canvas.create_image((256, 256), image=img, state="normal")
 
@@ -135,7 +76,7 @@ def paint(fractals, imagename):
         for col in range(512):
             x = minx + col * pixelsize
             y = miny + row * pixelsize
-            color = colorOfThePixel(complex(x, y), palette)
+            color = getColor(complex(x, y), palette)
             img.put(color, (col, 512 - row))
         window.update()  # display a row of pixels
 
@@ -146,30 +87,6 @@ def pixelsWrittenSoFar(rows, cols):
     return pixels
 
 
-#def colorOfThePixel(c, colors):
-#    """Return the color of the current pixel within the Mandelbrot set"""
-#    global z
-#    global MAX_ITERATIONS
-#    global mainWindowObject
-#    z0 = complex(0, 0)  # z0
-#
-#    for iter in range(MAX_ITERATIONS + 1):
-#        z0 = z0 * z0 + c
-#        # if the absolute value of z is less than TWO
-#        # if abs(z) > TWO:
-#        if abs(z) > 2.0:
-#            if z == float(2.0):
-#                return colors[iter-1]
-#            elif abs(z) < z:
-#                if abs(z) > TWO:
-#                    return colors[iter]
-#                else:
-#                    return colors[iter+0]
-#            else:
-#                return colors[iter+1]
-#    return colors[MAX_ITERATIONS]
-
-
 # These are the different views of the Mandelbrot set you can make with this
 # program.
 #
@@ -177,60 +94,42 @@ def pixelsWrittenSoFar(rows, cols):
 # switch between them by entering the name of the image you want to generate
 # into the variable 'image'.
 images = {
-        'mandelbrot': {
-            'centerX': -0.6,
-            'centerY': 0.0,
-            'axisLen': 2.5,
-            },
+    'mandelbrot': {
+        'centerX': -0.6,
+        'centerY': 0.0,
+        'axisLen': 2.5,
+    },
 
-        'mandelbrot-zoomed': {
-            'centerX': -1.0,
-            'centerY': 0.0,
-            'axisLen': 1.0,
-            },
+    'spiral0': {
+        'centerX': -0.761335372924805,
+        'centerY': 0.0835704803466797,
+        'axisLen': 0.004978179931102462,
+    },
 
-        'spiral0': {
-            'centerX': -0.761335372924805,
-            'centerY': 0.0835704803466797,
-            'axisLen': 0.004978179931102462,
-            },
+    'spiral1': {
+        'centerX': -0.747,
+        'centerY': 0.1075,
+        'axisLen': 0.002,
+    },
 
-        'spiral1': {
-            'centerX': -0.747,
-            'centerY': 0.1075,
-            'axisLen': 0.002,
-            },
+    'seahorse': {
+        'centerX': -0.745,
+        'centerY': 0.105,
+        'axisLen': 0.01,
+    },
 
-        'seahorse': {
-            'centerX': -0.745,
-            'centerY': 0.105,
-            'axisLen': 0.01,
-            },
+    'elephants': {
+        'centerX': 0.30820836067024604,
+        'centerY': 0.030620936230004017,
+        'axisLen': 0.03,
+    },
 
-        'spiral1': {
-            'centerX': -0.747,
-            'centerY': 0.1075,
-            'axisLen': 0.002,
-            },
-
-        'elephants': {
-            'centerX':  0.30820836067024604,
-            'centerY':  0.030620936230004017,
-            'axisLen':  0.03,
-            },
-
-        'leaf': {
-            'centerX': -1.543577002,
-            'centerY': -0.000058690069,
-            'axisLen':  0.000051248888,
-            },
-
-        'starfish': {
-            'centerX': -0.463595023481762,
-            'centerY': 0.598380871135558,
-            'axisLen': 0.00128413675654471,
-            },
-        }
+    'leaf': {
+        'centerX': -1.543577002,
+        'centerY': -0.000058690069,
+        'axisLen': 0.000051248888,
+    },
+}
 
 
 def mbrot_main(image):
@@ -251,3 +150,21 @@ def mbrot_main(image):
     # Call tkinter.mainloop so the GUI remains open
     print("Close the image window to exit the program")
     mainloop()
+
+
+if __name__ == '__main__':
+    if len(sys.argv) < 2:
+        print("Please provide the name of a fractal as an argument")
+        for i in images:
+            print(f"\t{i}")
+        sys.exit(1)
+
+    elif sys.argv[1] not in images:
+        print(f"ERROR: {sys.argv[1]} is not a valid fractal")
+        print("Please choose one of the following:")
+        for i in images:
+            print(f"\t{i}")
+        sys.exit(1)
+
+    else:
+        mbrot_main(sys.argv[1])
