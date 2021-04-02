@@ -93,17 +93,12 @@ def getColor():
 #### `__init__()`
 ```python
 def __init__():
-    """Set up our PhotoImage, and establish the min and max x and y variables"""
-```
-#### `makeTkWindow()`
-```python
-def makeTkWindow():
-    """Creates a TkWindow that we can paint on"""
+    """Set up our PhotoImage and everything else we need to draw our fractal"""
 ```
 #### `paint()`
 ```python
 def paint():
-    """Given a coordinate and a color, color the pixel accordingly"""
+    """Paint a fractal to the screen"""
 ```
 #### `saveImage()`
 ```python
@@ -128,19 +123,10 @@ if desired_fractal is not in FractalInformation.dictionary:
     for pattern in FractalInformation.dictionary:
         print pattern.name
 
-time_start = time()
-painter = new ImagePainter
-for i in range(0, painter.width):
-    for j in range(0, painter.height):
-        if we have a mandel fractal:
-            iteration_count = mandelbrot.getIterationCount(i, j)
-        elif we have a julia fractal:
-            iteration_count = julia.getIterationCount(i, j)
-        color = palette.getColor(iteration_count)
-        painter.paint(i, j, color)
-time_end = time()
-print(f"Painting done in {time_end - time_start}")
-painter.saveImage() 
+fractal = FractalInformation.dictionary[desired_fractal]
+
+painter = new ImagePainter()
+painter.paint(fractal)
 ```
 
 ### `Mandelbrot.py`
@@ -178,10 +164,6 @@ return colors[iterationCount]
 ### `ImagePainter.py`
 #### `__init__()`
 ```pseudocode
-
-```
-#### `makeTkWindow()`
-```pseudocode
 img = PhotoImage(width=512, height=512)
 window = Tk()
 canvas = Canvas(window, width=512, height=512, bg='#ffffff')
@@ -191,55 +173,192 @@ canvas.create_image((256, 256), image=img, state="normal")
 
 #### `paint()`
 ```pseudocode
+before = time.time()
 
+
+# Figure out how the boundaries of the PhotoImage relate to coordinates on
+# the imaginary plane.
+minx = fractal['centerX'] - (fractal['axisLen'] / 2.0)
+maxx = fractal['centerX'] + (fractal['axisLen'] / 2.0)
+miny = fractal['centerY'] - (fractal['axisLen'] / 2.0)
+
+# At this scale, how much length and height on the imaginary plane does one
+# pixel take?
+pixelsize = abs(maxx - minx) / 512    
+
+for row in range(512, 0, -1):
+    for col in range(512):
+        x = minx + col * pixelsize
+        y = miny + row * pixelsize
+        
+        if fractal['type'] == "Mandelbrot":
+            iterationCount = Mandelbrot.getIterationCount(complex(x, y))
+        elif fractal['type'] == "Julia":
+            iterationCount = Julia.getIterationCount(complex(x, y))            
+        
+        color = palette.getColor(iterationCount)
+        img.put(color, (col, 512 - row))
+    window.update()  # display a row of pixels
+
+
+# Save the image as a PNG
+after = time.time()
+print(f"Done in {after - before:.3f} seconds!", file=sys.stderr)
+saveImage()
+```
+
+#### `saveImage()`
+```pseudocode
+img.write(f"{fractal}.png")
+print(f"Wrote image {fractal}.png")
+
+# Call tkinter.mainloop so the GUI remains open
+print("Close the image window to exit the program")
+mainloop()
 ```
 
 
 
 # 3.  Function Template
 
-**Combine the function stubs written in step #2 with pseudocode from step #3.
-Comment out the pseudocode, leaving a valid program that compiles/runs without
-errors.  At this stage your program doesn't quite work, but it also doesn't
-crash.**
+### `main.py`
+#### `main()`
+```python
+if __name__ == '__main__':
+    """Here be our main point of entry. At the end of the day, we'll have to determine 
+    the user's desired fractal, and pass that information on to ImagePainter.py
+    """
+    # if len(sys.argv) < 2:
+    #     print("Please provide the name of a fractal as an argument")
+    #     for pattern in FractalInformation.dictionary:
+    #         print pattern.name
+    # desired_fractal = sys.argv[2]
+    # if desired_fractal is not in FractalInformation.dictionary:
+    #     print(f"ERROR: {desired_fractal} is not a valid fractal)
+    #     print("Please choose one of the following:")
+    #     for pattern in FractalInformation.dictionary:
+    #         print pattern.name
+    # 
+    # fractal = FractalInformation.dictionary[desired_fractal]
+    # 
+    # painter = new ImagePainter()
+    # painter.paint(fractal)
+    pass
+```
+
+### `Mandelbrot.py`
+#### `getIterationCount()`
+```python
+def getIterationCount():
+    """Returns an int: given a complex coordinate and a max number of iterations, return 
+    the iteration count of the Mandelbrot function for that point
+    """
+    # z = complex(0.0, 0.0)
+    # 
+    # for i in range(max_iterations):
+    #     z = z * z + c
+    #     if abs(z) > 2:
+    #         return i
+    # return max_iterations
+    return 0
+```
+
+### `Julia.py`
+#### `getIterationCount()`
+```python
+def getIterationCount():
+    """Returns an int: given a complex coordinate and a max number of iterations, return 
+    the iteration count of the Mandelbrot function for that point
+    """
+    # c = complex(-1.0, 0.0)
+    # 
+    # for i in range(max_iterations):
+    #     z = z * z + c
+    #     if abs(z) > 2:
+    #         return i
+    # return max_iterations
+    return 0
+```
+
+### `Palette.py`
+#### `getColor()`
+```python
+def getColor():
+    """Returns a String: given an iteration count, return a string corresponding to a color"""
+    # if iterationCount >= len(colors):
+    #     return colors[-1]
+    # return colors[iterationCount]
+    return '#000000'
+```
+
+### `ImagePainter.py`
+#### `__init__()`
+```python
+def __init__():
+    """Set up our PhotoImage and everything else we need to draw our fractal"""
+    # img = PhotoImage(width=512, height=512)
+    # window = Tk()
+    # canvas = Canvas(window, width=512, height=512, bg='#ffffff')
+    # canvas.pack()
+    # canvas.create_image((256, 256), image=img, state="normal")
+    pass
+```
+#### `paint()`
+```python
+def paint():
+    """Paint a fractal to the screen"""
+    # before = time.time()
+    # 
+    # 
+    # # Figure out how the boundaries of the PhotoImage relate to coordinates on
+    # # the imaginary plane.
+    # minx = fractal['centerX'] - (fractal['axisLen'] / 2.0)
+    # maxx = fractal['centerX'] + (fractal['axisLen'] / 2.0)
+    # miny = fractal['centerY'] - (fractal['axisLen'] / 2.0)
+    # 
+    # # At this scale, how much length and height on the imaginary plane does one
+    # # pixel take?
+    # pixelsize = abs(maxx - minx) / 512    
+    # 
+    # for row in range(512, 0, -1):
+    #     for col in range(512):
+    #         x = minx + col * pixelsize
+    #         y = miny + row * pixelsize
+    #         
+    #         if fractal['type'] == "Mandelbrot":
+    #             iterationCount = Mandelbrot.getIterationCount(complex(x, y))
+    #         elif fractal['type'] == "Julia":
+    #             iterationCount = Julia.getIterationCount(complex(x, y))            
+    #         
+    #         color = palette.getColor(iterationCount)
+    #         img.put(color, (col, 512 - row))
+    #     window.update()  # display a row of pixels
+    # 
+    # 
+    # # Save the image as a PNG
+    # after = time.time()
+    # print(f"Done in {after - before:.3f} seconds!", file=sys.stderr)
+    # saveImage(img)
+```
+#### `saveImage()`
+```python
+def saveImage():
+    """Given a file path, save the image to the disk"""
+    # img.write(f"{fractal}.png")
+    # print(f"Wrote image {fractal}.png")
+    # 
+    # # Call tkinter.mainloop so the GUI remains open
+    # print("Close the image window to exit the program")
+    # mainloop()
+```
 
 
 # 4.  Implementation
 
-**This is the only part of the process focused on writing code in your chosen
-programming language.**
-
-**One by one translate passages of pseudocode into valid code.  Fill in the gaps
-in the function template.  Exploit the purpose statement and the examples.**
-
-**If you were thorough in the previous steps and are familiar with your
-programming system this part will go by very quickly and the code will write
-itself.**
-
-**When you are learning a new programming language or an unfamiliar library this
-phase can be slow and difficult.  As you gain experience with the relevant
-technologies you will spend less and less time in this phase of the process.**
-
+See [src](../src)
 
 # 5.  Testing
 
-**Articulate the examples given in step #2 as tests and ensure that each
-function passes all of its tests.  Doing so discovers mistakes.  Tests also
-supplement examples in that they help others read and understand the definition
-when the need arises—and it will arise for any serious program.**
-
-**As bugs are discovered and fixed, devise new test cases that will detect these
-problems should they return.**
-
-**If you didn't come across any bugs (lucky you!) think of a possible flaw and a
-test that can be employed to screen for it.**
-
-**At a minimum you should create a document explaining step-by-step how a
-non-technical user may manually test your program to satisfy themselves that it
-operates correctly.  Explain the entire process starting how to launch the
-program, what inputs they should give and what results they should see at every
-step.  Provide test cases of good and bad inputs to catch both false positives
-and false negatives.  Any deviation from the expected outputs are errors.**
-
-**The ideal is to write an automated test to avoid all manual labor beyond
-launching the test.**
+See [unit test](../src/Testing). In addition to unit tests, I have images produced by commit 
+`7a33a7d77ce23acdd00045ce624d8246210328a8`, and I will use `diff` to see if the images the new program produces are
+exactly the same.

@@ -2,4 +2,4 @@
 
 | Date      | Events
 |-----------|--------------------
-| April 1   | Document code smells, start SDP
+| April 1   | Document code smells, finish SDP
