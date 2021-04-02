@@ -6,7 +6,6 @@
 import sys
 import time
 from tkinter import Tk, Canvas, PhotoImage, mainloop
-from math import sqrt
 
 # This color palette contains 100 color steps.
 palette = [
@@ -28,8 +27,6 @@ palette = [
     '#003d88', '#003784', '#003181', '#002c7e', '#00277a', '#002277',
 ]
 
-window = None
-
 
 def getColor(c, palette):
     """Return the color of the current pixel within the Mandelbrot set"""
@@ -42,24 +39,15 @@ def getColor(c, palette):
     return palette[-1]  # Indicate a bounded sequence
 
 
-img = None
-
-
-def paint(fractals, imagename):
+def paint(fractal, img, window):
     """Paint a Fractal image into the TKinter PhotoImage canvas.
     This code creates an image which is 640x640 pixels in size."""
-
-    global palette
-    global img
-
-    fractal = fractals[imagename]
 
     # Figure out how the boundaries of the PhotoImage relate to coordinates on
     # the imaginary plane.
     minx = fractal['centerX'] - (fractal['axisLen'] / 2.0)
     maxx = fractal['centerX'] + (fractal['axisLen'] / 2.0)
     miny = fractal['centerY'] - (fractal['axisLen'] / 2.0)
-    maxy = fractal['centerY'] + (fractal['axisLen'] / 2.0)
 
     # Display the image on the screen
     canvas = Canvas(window, width=512, height=512, bg='#ffffff')
@@ -70,8 +58,6 @@ def paint(fractals, imagename):
     # pixel take?
     pixelsize = abs(maxx - minx) / 512
 
-    portion = int(512 / 64)
-    total_pixels = 1048576
     for row in range(512, 0, -1):
         for col in range(512):
             x = minx + col * pixelsize
@@ -79,12 +65,6 @@ def paint(fractals, imagename):
             color = getColor(complex(x, y), palette)
             img.put(color, (col, 512 - row))
         window.update()  # display a row of pixels
-
-
-def pixelsWrittenSoFar(rows, cols):
-    pixels = rows * cols
-    print(f"{pixels} pixels have been output so far")
-    return pixels
 
 
 # These are the different views of the Mandelbrot set you can make with this
@@ -133,13 +113,11 @@ images = {
 
 
 def mbrot_main(image):
-    global img
     # Set up the GUI so that we can paint the fractal image on the screen
     before = time.time()
-    global window
     window = Tk()
     img = PhotoImage(width=512, height=512)
-    paint(images, image)
+    paint(images[image], img, window)
 
     # Save the image as a PNG
     after = time.time()
