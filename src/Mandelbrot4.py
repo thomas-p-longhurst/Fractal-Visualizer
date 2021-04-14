@@ -1,19 +1,19 @@
 from Fractal import Fractal
 
 
-class Julia(Fractal):
+class Mandelbrot4(Fractal):
     def __init__(self):
         pass
 
-    def count(self, z):
+    def count(self, c):
         """Returns an int: given a complex coordinate, return the iteration count of the
         Mandelbrot function for that point. Can only be run in concrete subclasses.
         """
-        # c = complex(-1.0, 0.0)
+        # z = complex(0.0, 0.0)
         #
-        # for i in range(self.__MAX_ITERATIONS):
-        #     z = z * z + c
+        # for i in range(max_iterations):
+        #     z = z ** 4 + c
         #     if abs(z) > 2:
         #         return i
-        # return self.__MAX_ITERATIONS
+        # return max_iterations
         return 0
