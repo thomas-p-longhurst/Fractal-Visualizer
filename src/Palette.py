@@ -1,4 +1,3 @@
-import colour
 from abc import ABC
 
 
