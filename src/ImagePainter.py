@@ -1,19 +1,17 @@
 import sys
 import time
-import Mandelbrot
-import Julia
-import Palette
 from tkinter import Tk, Canvas, PhotoImage, mainloop
 
 
 class ImagePainter:
-    def __init__(self):
+    def __init__(self, size):
         """Set up our PhotoImage and everything else we need to draw our fractal"""
         self.window = Tk()
-        self.img = PhotoImage(width=512, height=512)
-        self.canvas = Canvas(self.window, width=512, height=512, bg='#ffffff')
+        self.size = size
+        self.img = PhotoImage(width=size, height=size)
+        self.canvas = Canvas(self.window, width=size, height=size, bg='#ffffff')
         self.canvas.pack()
-        self.canvas.create_image((256, 256), image=self.img, state="normal")
+        self.canvas.create_image((size/2, size/2), image=self.img, state="normal")
 
     def paint(self, fractal, palette):
         """Paint a fractal to the screen"""
@@ -28,17 +26,17 @@ class ImagePainter:
 
         # At this scale, how much length and height on the imaginary plane does one
         # pixel take?
-        pixelsize = abs(maxx - minx) / 512
+        pixelsize = abs(maxx - minx) / self.size
 
-        for row in range(512, 0, -1):
-            for col in range(512):
+        for row in range(self.size, 0, -1):
+            for col in range(self.size):
                 x = minx + col * pixelsize
                 y = miny + row * pixelsize
 
                 iterationCount = fractal.count(complex(x, y))
 
                 color = palette.getColor(iterationCount)
-                self.img.put(color, (col, 512 - row))
+                self.img.put(color, (col, self.size - row))
             self.window.update()  # display a row of pixels
 
 

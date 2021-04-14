@@ -13,6 +13,3 @@ class PaletteBlackAndWhite(Palette):
 
     def getColor(self, iterationCount):
         return self.__color_palette[iterationCount % len(self.__color_palette)]
-
-    def getLen(self):
-        return len(self.__color_palette)

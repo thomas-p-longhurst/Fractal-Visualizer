@@ -2,7 +2,7 @@ from abc import ABC
 
 
 class Fractal(ABC):
-    def __init__(self):
+    def __init__(self, fractal_information):
         raise NotImplementedError("Concrete subclass of Fractal must implement __init__")
 
     def count(self, coord):

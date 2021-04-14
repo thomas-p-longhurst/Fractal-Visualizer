@@ -1,9 +1,8 @@
 import Mandelbrot, Mandelbrot4, Julia
-import FractalInformation
 
 
 def makeFractal(fractal_info):
-    """Returns a concrete palette object specified by a String."""
+    """Returns a concrete fractal object specified by a dictionary."""
 
     type = fractal_info["type"]
     if type == "mandelbrot":

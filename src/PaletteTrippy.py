@@ -34,9 +34,5 @@ class PaletteTrippy(Palette):
         self.__color_palette += [c.hex_l for c in greenyellow.range_to(black, color_step)][1:]
         self.__color_palette += [c.hex_l for c in black.range_to(red, color_step)][1:-1]
 
-
     def getColor(self, iterationCount):
         return self.__color_palette[iterationCount % len(self.__color_palette)]
-
-    def getLen(self):
-        return len(self.__color_palette)

@@ -10,6 +10,3 @@ class Palette(ABC):
         in concrete subclasses."""
         raise NotImplementedError("Concrete subclass of Palette must implement getColor()")
 
-    def getLen(self):
-        # return len(self.colors)
-        raise NotImplementedError("Tom hasn't done Palette.getLen() yet.")

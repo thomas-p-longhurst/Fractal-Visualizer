@@ -3,4 +3,4 @@
 | Date      | Events
 |-----------|--------------------
 | April 1   | Document code smells, write manual, finish SDP, finish testing (tbh just did everything)
-| April 13  | Update SDP for second sprint, finish implementation
+| April 13  | Update SDP for second sprint, finish implementation, finish testing, update manual

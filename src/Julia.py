@@ -14,7 +14,6 @@ class Julia(Fractal):
         Mandelbrot function for that point. Can only be run in concrete subclasses.
         """
 
-
         for i in range(self.__max_iterations):
             z = z * z + self.c
             if abs(z) > 2:

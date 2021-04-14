@@ -1,12 +1,13 @@
-import sys, os
+import sys
 import FractalInformation, ImagePainter, FractalFactory, PaletteFactory
+
+DEFAULT_FRACTAL = "../data/mandelbrot.frac"
+DEFAULT_PALETTE = "default"
 
 if __name__ == '__main__':
     """Here be our main point of entry. Determine the desired fractal and palette, create them,
     and pass them on to ImagePainter.
     """
-    DEFAULT_FRACTAL = "mandelbrot"
-    DEFAULT_PALETTE = "default"
 
     if len(sys.argv) < 2:
         print("FractalFactory: Creating default fractal")
@@ -15,7 +16,7 @@ if __name__ == '__main__':
         desired_fractal = sys.argv[1]
 
     if len(sys.argv) < 3:
-        print("PaletteFactory: Creating default fractal")
+        print("PaletteFactory: Creating default palette")
         desired_palette = DEFAULT_PALETTE
     else:
         desired_palette = sys.argv[2]
@@ -29,6 +30,6 @@ if __name__ == '__main__':
     fractal_name = desired_fractal.split("/")[-1].split(".")[0]
 
     # painter = new ImagePainter()
-    painter = ImagePainter.ImagePainter()
+    painter = ImagePainter.ImagePainter(fractal_info["pixels"])
     painter.paint(fractal, palette)
     painter.saveImage(fractal_name)
