@@ -20,7 +20,8 @@ if __name__ == '__main__':
     else:
         desired_palette = sys.argv[2]
 
-    fractal = FractalFactory.makeFractal(desired_fractal)
+    fractal_info = FractalInformation.makeFractalInfo(desired_fractal)
+    fractal = FractalFactory.makeFractal(fractal_info)
     palette = PaletteFactory.makePalette(desired_palette)
 
     # strips down everything but the file name, without extension.
