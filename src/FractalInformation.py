@@ -1,64 +1,48 @@
-dictionary = {
-    'mandelbrot': {
-        'centerX': -0.6,
-        'centerY': 0.0,
-        'axisLen': 2.5,
-        'type': 'mandelbrot'
-    },
+REQUIRED_FIELDS = ["type", "centerx", "centery", "axislength", "pixels", "iterations"]
+REQUIRED_JULIA_FIELDS = ["creal", "cimag"]
+INT_FIELDS = ["pixels", "iterations"]
+FLOAT_FIELDS = ["centerx", "centery", "axislength", "creal", "cimag"]
 
-    'spiral0': {
-        'centerX': -0.761335372924805,
-        'centerY': 0.0835704803466797,
-        'axisLen': 0.004978179931102462,
-        'type': 'mandelbrot'
-    },
 
-    'spiral1': {
-        'centerX': -0.747,
-        'centerY': 0.1075,
-        'axisLen': 0.002,
-        'type': 'mandelbrot'
-    },
+def makeFractalInfo(fractal_file):
+    """Returns a dictionary: Processes a .frac file into a dictionary used for fractal information."""
+    fractal_config = open(fractal_file)
+    # info = new dictionary()
+    info = {}
+    for line in fractal_config:
+        line = line.strip().lower()
+        # if line[0] == '#' or if the line is blank:
+        if not bool(line):
+            continue
+        if line[0] == '#':
+            continue
 
-    'seahorse': {
-        'centerX': -0.745,
-        'centerY': 0.105,
-        'axisLen': 0.01,
-        'type': 'mandelbrot'
-    },
+        items = line.split(": ")
+        key = items[0]
+        value = items[1]
 
-    'elephants': {
-        'centerX': 0.30820836067024604,
-        'centerY': 0.030620936230004017,
-        'axisLen': 0.03,
-        'type': 'mandelbrot'
-    },
+        if len(items) < 2:
+            raise NotImplementedError(f"Key \"{key}\" has no value")
 
-    'leaf': {
-        'centerX': -1.543577002,
-        'centerY': -0.000058690069,
-        'axisLen': 0.000051248888,
-        'type': 'mandelbrot'
-    },
+        if key in FLOAT_FIELDS:
+            try:
+                value = float(value)
+            except ValueError:
+                raise NotImplementedError(f"Key \"{key}\" must have a float value (was \"{value}\")")
+        if key in INT_FIELDS:
+            if not value.isnumeric():
+                raise NotImplementedError(f"Key \"{key}\" must have an int value (was \"{value}\")")
+            value = int(value)
 
-    'fulljulia': {
-        'centerX':     0.0,
-        'centerY':     0.0,
-        'axisLen':  4.0,
-        'type': 'julia'
-    },
+        info[key] = value
+    fractal_config.close()
 
-    'hourglass': {
-        'centerX':     0.618,
-        'centerY':     0.00,
-        'axisLen':  0.017148277367054,
-        'type': 'julia'
-    },
+    for field in REQUIRED_FIELDS:
+        if field not in info.keys():
+            raise NotImplementedError(f"Field {field} is missing from configuration file.")
+    if info["type"] == "julia":
+        for field in REQUIRED_JULIA_FIELDS:
+            if field not in info.keys():
+                raise NotImplementedError(f"Field {field} is missing from configuration file.")
 
-    'lakes': {
-        'centerX': -0.339230468501458,
-        'centerY': 0.417970758224314,
-        'axisLen': 0.164938488846612,
-        'type': 'julia'
-    },
-}
+    return info

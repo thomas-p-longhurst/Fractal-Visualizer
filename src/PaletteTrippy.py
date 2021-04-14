@@ -18,7 +18,7 @@ class PaletteTrippy(Palette):
         greenyellow = Color('greenyellow')
         black = Color('black')
 
-        color_step = 2
+        color_step = 20
 
         self.__color_palette = [c.hex_l for c in red.range_to(steelblue, color_step)]
         self.__color_palette += [c.hex_l for c in steelblue.range_to(orange, color_step)][1:]
@@ -32,6 +32,7 @@ class PaletteTrippy(Palette):
         self.__color_palette += [c.hex_l for c in gold.range_to(purple, color_step)][1:]
         self.__color_palette += [c.hex_l for c in purple.range_to(greenyellow, color_step)][1:]
         self.__color_palette += [c.hex_l for c in greenyellow.range_to(black, color_step)][1:]
+        self.__color_palette += [c.hex_l for c in black.range_to(red, color_step)][1:-1]
 
 
     def getColor(self, iterationCount):
