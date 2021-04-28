@@ -1,7 +1,7 @@
 import sys
 import FractalInformation, ImagePainter, FractalFactory, PaletteFactory
 
-DEFAULT_FRACTAL = "../data/mandelbrot.frac"
+DEFAULT_FRACTAL = FractalInformation.DEFAULT_FRACTAL_KEY
 DEFAULT_PALETTE = "default"
 
 if __name__ == '__main__':

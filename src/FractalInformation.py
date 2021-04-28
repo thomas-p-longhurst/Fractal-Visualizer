@@ -2,10 +2,20 @@ REQUIRED_FIELDS = ["type", "centerx", "centery", "axislength", "pixels", "iterat
 REQUIRED_JULIA_FIELDS = ["creal", "cimag"]
 INT_FIELDS = ["pixels", "iterations"]
 FLOAT_FIELDS = ["centerx", "centery", "axislength", "creal", "cimag"]
+DEFAULT_FRACTAL_KEY = "DEFAULT"
 
 
 def makeFractalInfo(fractal_file):
     """Returns a dictionary: Processes a .frac file into a dictionary used for fractal information."""
+    if fractal_file == DEFAULT_FRACTAL_KEY:
+        return {
+            "type": "mandelbrot",
+            "pixels": 640,
+            "centerx": 0.0,
+            "centery": 0.0,
+            "axislength": 4.0,
+            "iterations": 100
+        }
     fractal_config = open(fractal_file)
     # info = new dictionary()
     info = {}
