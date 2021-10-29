@@ -29,9 +29,10 @@ Additionally, this assignment is subject to the following penalties:
     *   `unittest`
     *   `sys`
     *   `time`
+    *   `math`
     *   `tkinter`
     *   modules that are provided by the starter code
-    *   or modules you wrote yourself
+    *   modules you wrote yourself
     *   This assignment is about the experience of solving this puzzle for yourself without leaning on code written by others, no matter how "real-world" it would be to do so.
 5.  **15 point penalty**  if your UML diagram is unreadable.  Watch out for a transparent background (on Diagrams.net, click File -> Export as -> PNG..., then make sure that the option "Transparent background" is left unchecked).  Make sure that the background isn't black, as this obscures the lines connecting classes to each other.  Make sure that the file size is large enough to make the text legible, and that the colors of the diagram stand out in sharp contrast to the background.
 6.  **10 point penalty** for each  _trivial_ unit test (i.e. a unit test which unconditionally passes without meaningfully testing some functionality)

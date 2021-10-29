@@ -217,6 +217,7 @@ Upon completion of Assignment 4.1 push your code to GitLab as usual.
     congruent with final the product.  List the names of possible palettes in
     the user manual as this program will not regard absent command line
     arguments as an error and will not print a usage message.
+6.  Seven (7) meaningful, non-trivial unit tests are included.  All of them pass.
 
 
 ## Command line interface
