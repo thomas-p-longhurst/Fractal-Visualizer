@@ -543,3 +543,4 @@ exactly the same.
 * Assignment requirements seem largely the same, as well as the starter code, minus the fact that the new starter code 
 is somewhat smellier.
 * Let's see where a rebase gets us...
+* Rebase was successful, but it seems I missed the fact that I need to add 7 unit tests. Let's take care of that now.
