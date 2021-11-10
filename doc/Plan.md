@@ -537,3 +537,9 @@ See [src](../src)
 See [unit test](../src/Testing). In addition to unit tests, I have images produced by commit 
 `7a33a7d77ce23acdd00045ce624d8246210328a8`, and I will use `diff` to see if the images the new program produces are
 exactly the same.
+
+# 6. Differences from Spring 2021 to Fall 2021
+
+* Assignment requirements seem largely the same, as well as the starter code, minus the fact that the new starter code 
+is somewhat smellier.
+* Let's see where a rebase gets us...
